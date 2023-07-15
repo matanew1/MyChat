@@ -8,29 +8,32 @@ require("dotenv").config();
 
 const app = express();
 app.use(cors());
-
 const server = http.createServer(app);
 const io = new Server(server, { cors: process.env.CORS_OPT });
 
-io.on("connection", (socket) => {
-  console.log(`User Connected: ${socket.id}`);
+(connectionRoom = () => {
+  io.on("connection", (socket) => {
+    console.log(`User Connected: ${socket.id}`);
 
-  socket.on("join_room", (data) => {
-    socket.join(data);
-    console.log(`User with ID: ${socket.id} joined room: ${data}`);
+    socket.on("join_room", (data) => {
+      socket.join(data);
+      console.log(`User with ID: ${socket.id} joined room: ${data}`);
+    });
+
+    socket.on("send_message", async (data) => {
+      socket.to(data.room).emit("receive_message", data);
+      await saveMessage(data);
+    });
+
+    socket.on("disconnect", () => {
+      console.log("User Disconnected", socket.id);
+    });
   });
+})();
 
-  socket.on("send_message", async (data) => {
-    socket.to(data.room).emit("receive_message", data);
-    await saveMessage(data);
+(runServer = () => {
+  server.listen(process.env.PORT, () => {
+    console.log(`Server's running on port ${process.env.PORT}`);
+    databaseConnection(); // Connect to DB
   });
-
-  socket.on("disconnect", () => {
-    console.log("User Disconnected", socket.id);
-  });
-});
-
-server.listen(process.env.PORT, () => {
-  console.log(`Server's running on port ${process.env.PORT}`);
-  databaseConnection(); // Connect to DB
-});
+})();
