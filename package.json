@@ -1,0 +1,23 @@
+{
+  "name": "chat-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "lerna run start --stream",
+    "build": "lerna run build",
+    "test": "npx playwright test"
+  },
+  "author": "",
+  "license": "ISC",
+  "workspaces": [
+    "client/",
+    "server/"
+  ],
+  "devDependencies": {
+    "@playwright/test": "^1.35.1"
+  },
+  "dependencies": {
+    "socket.io": "^4.7.1"
+  }
+}
