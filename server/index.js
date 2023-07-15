@@ -2,31 +2,15 @@ const express = require("express");
 const http = require("http");
 const cors = require("cors");
 const { Server } = require("socket.io");
-const mongoose = require("mongoose");
+const databaseConnection = require("./database/database.js");
 const { saveMessage } = require("./services/messageService.js");
+require("dotenv").config();
 
 const app = express();
 app.use(cors());
 
 const server = http.createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST"],
-  },
-});
-
-mongoose
-  .connect("mongodb+srv://matan:matan@cluster0.bgo3pus.mongodb.net/chat", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log("Connected to MongoDB");
-  })
-  .catch((error) => {
-    console.error("Error connecting to MongoDB:", error);
-  });
+const io = new Server(server, { cors: process.env.CORS_OPT });
 
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
@@ -38,8 +22,6 @@ io.on("connection", (socket) => {
 
   socket.on("send_message", async (data) => {
     socket.to(data.room).emit("receive_message", data);
-
-    // Save the message to the database
     await saveMessage(data);
   });
 
@@ -48,6 +30,7 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(3001, () => {
-  console.log("SERVER RUNNING");
+server.listen(process.env.PORT, () => {
+  console.log(`Server's running on port ${process.env.PORT}`);
+  databaseConnection(); // Connect to DB
 });
