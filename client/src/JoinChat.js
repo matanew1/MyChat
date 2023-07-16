@@ -2,11 +2,19 @@ import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import Chat from "./Chat";
 import { useNavigate } from "react-router-dom";
 
-const Login = ({ username, setUsername, room, setRoom, socket }) => {
+const JoinChat = ({
+  setJoined,
+  username,
+  setUsername,
+  room,
+  setRoom,
+  socket,
+}) => {
   const navigate = useNavigate();
 
   const joinRoom = () => {
     if (username !== "" && room !== "") {
+      setJoined(true);
       socket.emit("join_room", room);
       navigate(`/chat/${room}`);
     }
@@ -30,7 +38,7 @@ const Login = ({ username, setUsername, room, setRoom, socket }) => {
         <Box sx={{ display: "flex", flexDirection: "column" }}>
           <TextField
             label="Username"
-            placeholder="John..."
+            placeholder="Username..."
             variant="outlined"
             onChange={(event) => setUsername(event.target.value)}
             sx={{ mb: 2 }}
@@ -51,4 +59,4 @@ const Login = ({ username, setUsername, room, setRoom, socket }) => {
   );
 };
 
-export default Login;
+export default JoinChat;
