@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import JoinChat from "./JoinChat";
+import Video from "./Video";
 import Chat from "./Chat";
 import Home from "./Home";
 import Header from "./Header";
@@ -15,6 +16,7 @@ const App = () => {
 
   return (
     <>
+      <Video />
       <Header joined={joined} />
       <Router>
         <Routes>

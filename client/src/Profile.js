@@ -1,4 +1,4 @@
-import { Divider, Card, Box, Avatar, Stack, Typography } from "@mui/material";
+import { Divider, Card, Box, Stack, Typography } from "@mui/material";
 
 const Profile = ({ username, room }) => {
   return (

@@ -1,5 +1,5 @@
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
-import Chat from "./Chat";
+// import Chat from "./Chat";
 import { useNavigate } from "react-router-dom";
 
 const JoinChat = ({
