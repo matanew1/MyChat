@@ -50,7 +50,6 @@ const Header = () => {
             spacing={1}
           >
             <Grid item>
-              {/* Logo */}
               <Box display="flex" alignItems="center" gap="20px">
                 {/* Text label */}
                 <Typography

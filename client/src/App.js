@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import JoinChat from "./JoinChat";
 import Video from "./Video";
@@ -10,9 +10,16 @@ import { io } from "socket.io-client";
 const socket = io.connect("http://localhost:3001");
 
 const App = () => {
-  const [username, setUsername] = useState("");
-  const [room, setRoom] = useState("");
+  const storedUsername = localStorage.getItem("username") || "";
+  const storedRoom = localStorage.getItem("room") || "";
+  const [username, setUsername] = useState(storedUsername);
+  const [room, setRoom] = useState(storedRoom);
   const [joined, setJoined] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem("username", username);
+    localStorage.setItem("room", room);
+  }, [username, room]);
 
   return (
     <>

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Grid, Box, TextField, Typography, Button } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
-import Profile from "./Profile";
 
 const Message = ({ messageContent, username }) => {
   const isAuthor = username === messageContent.author;
@@ -24,20 +23,13 @@ const Message = ({ messageContent, username }) => {
           boxShadow: 1,
         }}
       >
-        <Typography>{messageContent.message}</Typography>
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: isAuthor ? "flex-end" : "flex-start",
-        }}
-      >
-        <Typography variant="caption" sx={{ mr: 1 }}>
-          {messageContent.time}
-        </Typography>
-        <Typography variant="caption" sx={{ fontWeight: "bold" }}>
+        <Typography variant="caption" sx={{ fontWeight: "bold", mr: 5 }}>
           {messageContent.author}
         </Typography>
+        <Typography variant="caption">
+          Sent at: {messageContent.time}
+        </Typography>
+        <Typography>{messageContent.message}</Typography>
       </Box>
     </Box>
   );
@@ -76,17 +68,16 @@ const Chat = ({ socket, username, room }) => {
 
   return (
     <Grid container direction="column" height="100%">
-      <Grid item>
-        <Profile username={username} room={room} />
-      </Grid>
       <Grid item xs>
         <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
-          <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
-            <Typography variant="h5" align="center">
-              Live Chat
-            </Typography>
-          </Box>
-          <Box sx={{ overflowY: "auto", flexGrow: 1 }}>
+          <Box
+            sx={{
+              p: 3,
+              marginTop: 3,
+              borderColor: "divider",
+            }}
+          ></Box>
+          <Box height="500px" sx={{ overflowY: "auto", flexGrow: 1 }}>
             {messageList.map((messageContent, index) => (
               <Message
                 key={index}
@@ -96,7 +87,11 @@ const Chat = ({ socket, username, room }) => {
             ))}
           </Box>
           <Box
-            sx={{ p: 2, borderTop: 1, borderColor: "divider", display: "flex" }}
+            sx={{
+              p: 2,
+              borderColor: "divider",
+              display: "flex",
+            }}
           >
             <TextField
               value={currentMessage}
@@ -105,7 +100,12 @@ const Chat = ({ socket, username, room }) => {
               fullWidth
               onChange={(event) => setCurrentMessage(event.target.value)}
               onKeyPress={(event) => event.key === "Enter" && sendMessage()}
-              sx={{ mr: 1 }}
+              sx={{
+                mr: 1,
+                "& .MuiOutlinedInput-root": {
+                  backgroundColor: "#DCF8C6",
+                },
+              }}
             />
             <Button
               variant="contained"
