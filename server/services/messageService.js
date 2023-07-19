@@ -4,8 +4,9 @@ const saveMessage = async (data) => {
   try {
     const message = new Message({
       room: data.room,
-      sender: data.author,
+      sender: data.sender,
       message: data.message,
+      time: data.time,
     });
     await message.save();
   } catch (error) {
@@ -13,4 +14,12 @@ const saveMessage = async (data) => {
   }
 };
 
-module.exports = { saveMessage };
+const getHistoryMsgByRoom = async (room) => {
+  try {
+    return await Message.find({ room });
+  } catch (error) {
+    console.error("Error saving message:", error);
+  }
+};
+
+module.exports = { saveMessage, getHistoryMsgByRoom };

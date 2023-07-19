@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Grid, Box, TextField, Typography, Button } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 
 const Message = ({ messageContent, username }) => {
-  const isAuthor = username === messageContent.author;
+  const isAuthor = username === messageContent.sender;
 
   return (
     <Box
@@ -24,7 +24,7 @@ const Message = ({ messageContent, username }) => {
         }}
       >
         <Typography variant="caption" sx={{ fontWeight: "bold", mr: 5 }}>
-          {messageContent.author}
+          {messageContent.sender}
         </Typography>
         <Typography variant="caption">
           Sent at: {messageContent.time}
@@ -40,31 +40,29 @@ const Chat = ({ socket, username, room }) => {
   const [messageList, setMessageList] = useState([]);
 
   const sendMessage = () => {
-    if (currentMessage !== "") {
+    if ((username !== "", currentMessage !== "")) {
       const messageData = {
         room: room,
-        author: username,
+        sender: username,
         message: currentMessage,
         time: `${new Date().getHours()}:${new Date().getMinutes()}`,
       };
 
       socket.emit("send_message", messageData);
-      setMessageList((list) => [...list, messageData]);
       setCurrentMessage("");
     }
   };
 
-  useEffect(() => {
-    const receiveMessage = (data) => {
-      setMessageList((list) => [...list, data]);
-    };
+  const getRoomForHistory = () => {
+    if (room !== "") {
+      socket.emit("get_history", room);
+      socket.on("get_history", (data) => {
+        setMessageList([...data]);
+      });
+    }
+  };
 
-    socket.on("receive_message", receiveMessage);
-
-    return () => {
-      socket.off("receive_message", receiveMessage);
-    };
-  }, [socket]);
+  getRoomForHistory();
 
   return (
     <Grid container direction="column" height="100%">
@@ -77,7 +75,16 @@ const Chat = ({ socket, username, room }) => {
               borderColor: "divider",
             }}
           ></Box>
-          <Box height="500px" sx={{ overflowY: "auto", flexGrow: 1 }}>
+          <Box
+            sx={{
+              minHeight: {
+                xs: "calc(100vh - 300px)",
+                sm: "calc(100vh - 200px)",
+              },
+              overflowY: "auto",
+              flexGrow: 1,
+            }}
+          >
             {messageList.map((messageContent, index) => (
               <Message
                 key={index}
@@ -110,7 +117,7 @@ const Chat = ({ socket, username, room }) => {
             <Button
               variant="contained"
               onClick={sendMessage}
-              sx={{ minWidth: "40px", width: "40px", height: "40px", p: 0 }}
+              sx={{ width: "60px", height: "55px", p: 0 }}
             >
               <SendIcon />
             </Button>

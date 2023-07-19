@@ -3,7 +3,10 @@ const http = require("http");
 const cors = require("cors");
 const { Server } = require("socket.io");
 const databaseConnection = require("./database/database.js");
-const { saveMessage } = require("./services/messageService.js");
+const {
+  saveMessage,
+  getHistoryMsgByRoom,
+} = require("./services/messageService.js");
 require("dotenv").config();
 
 const app = express();
@@ -20,8 +23,12 @@ const io = new Server(server, { cors: process.env.CORS_OPT });
       console.log(`User with ID: ${socket.id} joined room: ${data}`);
     });
 
+    socket.on("get_history", async (data) => {
+      const messages = await getHistoryMsgByRoom(data);
+      io.emit("get_history", messages);
+    });
+
     socket.on("send_message", async (data) => {
-      socket.to(data.room).emit("receive_message", data);
       await saveMessage(data);
     });
 

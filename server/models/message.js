@@ -1,12 +1,21 @@
 const mongoose = require("mongoose");
 
 const messageSchema = new mongoose.Schema({
-  room: String,
-  sender: String,
-  message: String,
-  timestamp: {
-    type: Date,
-    default: Date.now,
+  room: {
+    type: String,
+    required: true,
+  },
+  sender: {
+    type: String,
+    required: true,
+  },
+  message: {
+    type: String,
+    required: true,
+  },
+  time: {
+    type: String,
+    required: true,
   },
 });
 
