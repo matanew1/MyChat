@@ -1,0 +1,26 @@
+version: "3"
+services:
+  server:
+    build:
+      context: server
+      dockerfile: Dockerfile
+    container_name: server
+    restart: always
+    ports:
+      - "3001:3001"
+    environment:
+      MONGO_URI: "mongodb+srv://matan:matan@cluster0.bgo3pus.mongodb.net/chat"
+      PORT: "3001"
+      CLIENT_URI: "http://localhost:${PORT}"
+      METHODS: '["GET", "POST"]'
+      CORS_OPT: '{"origin": "${CLIENT_URI}", "methods": ${METHODS}}'
+
+  client:
+    build:
+      context: client
+      dockerfile: Dockerfile
+    container_name: client
+    ports:
+      - "3000:3000"
+    depends_on:
+      - server
