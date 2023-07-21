@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   Box,
   AppBar,
@@ -64,11 +65,16 @@ const Header = () => {
             </Grid>
             {/* Menu items */}
             <Grid item sx={{ display: { xs: "none", md: "block" } }}>
-              <Button href="/" style={{ fontWeight: "bold", color: "white" }}>
+              <Button
+                component={Link}
+                to="/"
+                style={{ fontWeight: "bold", color: "white" }}
+              >
                 Home
               </Button>
               <Button
-                href={mailto}
+                component={Link}
+                to={mailto}
                 style={{ fontWeight: "bold", color: "white" }}
               >
                 Contact
@@ -89,10 +95,14 @@ const Header = () => {
                 onClose={handleMenuClose}
               >
                 {/* Menu items */}
-                <MenuItem to="/" onClick={handleMenuClose}>
+                <MenuItem component={Link} to="/" onClick={handleMenuClose}>
                   Home
                 </MenuItem>
-                <MenuItem to={mailto} onClick={handleMenuClose}>
+                <MenuItem
+                  component={Link}
+                  to={mailto}
+                  onClick={handleMenuClose}
+                >
                   Contact
                 </MenuItem>
               </Menu>

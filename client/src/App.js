@@ -24,8 +24,8 @@ const App = () => {
   return (
     <>
       <Video />
-      <Header joined={joined} />
       <Router>
+        <Header joined={joined} />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route
