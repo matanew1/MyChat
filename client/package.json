@@ -7,19 +7,11 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.0",
     "@mui/material": "^5.14.0",
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "axios": "^1.4.0",
-    "emoji-mart": "^5.5.2",
-    "emoji-picker-react": "^4.4.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-emoji-picker": "^1.0.13",
     "react-router-dom": "^6.14.1",
     "react-scripts": "5.0.1",
     "socket.io-client": "^4.7.1",
-    "twemoji": "^14.0.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -45,5 +37,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint-config-react-app": "^7.0.1"
   }
 }

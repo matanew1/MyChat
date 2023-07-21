@@ -15,6 +15,6 @@
     "server/"
   ],
   "devDependencies": {
-    "@playwright/test": "^1.35.1"
+    "@playwright/test": "^1.36.1"
   }
 }
